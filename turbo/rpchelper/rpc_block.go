@@ -10,6 +10,7 @@ import (
 	"github.com/ledgerwatch/erigon/eth/stagedsync/stages"
 	"github.com/ledgerwatch/erigon/rpc"
 	"github.com/ledgerwatch/erigon/zk/hermez_db"
+	"github.com/ledgerwatch/erigon/zkevm/log"
 )
 
 var UnknownBlockError = &rpc.CustomError{
@@ -36,6 +37,7 @@ func GetLatestBlockNumber(tx kv.Tx) (uint64, error) {
 
 func GetFinalizedBlockNumber(tx kv.Tx) (uint64, error) {
 	forkchoiceFinalizedHash := rawdb.ReadForkchoiceFinalized(tx)
+	log.Info("[GetFinalizedBlockNumber] Got forkchoiceFinalizedHash: ", forkchoiceFinalizedHash)
 	if forkchoiceFinalizedHash != (libcommon.Hash{}) {
 		forkchoiceFinalizedNum := rawdb.ReadHeaderNumber(tx, forkchoiceFinalizedHash)
 		if forkchoiceFinalizedNum != nil {
